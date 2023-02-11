@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../api/shared_preference/shared_preference.dart';
+import '../pages/course_detail.dart';
 
 String? name;
 String? image;
@@ -184,6 +185,15 @@ class _TopBarState extends State<TopBar> {
                                     func: () {
                                       setState(() {
                                         tab = index;
+                                        Navigator.push(
+                                          context,
+                                          CupertinoPageRoute(
+                                            builder: (context) =>
+                                                CourseDetailPage(
+                                              courseData: courseData,
+                                            ),
+                                          ),
+                                        );
                                       });
                                     },
                                   ),
