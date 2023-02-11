@@ -23,15 +23,15 @@ class UserPreferences {
 
   
 
-  ThemeData _darktheme = ThemeData(
-    primarySwatch: Colors.red,
-    brightness: Brightness.dark
-  );
+  // ThemeData _darktheme = ThemeData(
+  //   primarySwatch: Colors.red,
+  //   brightness: Brightness.dark
+  // );
 
-  ThemeData _lighttheme = ThemeData(
-    primarySwatch: Colors.red,
-    brightness: Brightness.light
-  );
+  // ThemeData _lighttheme = ThemeData(
+  //   primarySwatch: Colors.red,
+  //   brightness: Brightness.light
+  // );
 
   static Future<User> getuser(String image, String name) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
