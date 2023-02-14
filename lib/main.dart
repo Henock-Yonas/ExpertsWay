@@ -1,3 +1,5 @@
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:learncoding/api/Google_signin_api.dart';
 import 'package:learncoding/api/google_signin_api.dart';
 import 'package:learncoding/ui/pages/help.dart';
 import 'package:learncoding/ui/pages/navmenu/dashboard.dart';
@@ -24,8 +26,8 @@ late SharedPreferences prefs;
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-   isDark = preferences.getBool('is_dark') ?? false;
+  prefs = await SharedPreferences.getInstance();
+  isDark = prefs.getBool('is_dark') ?? false;
 
   // await Firebase.initializeApp();
   SharedPreferences.getInstance().then((prefs) {
@@ -52,22 +54,22 @@ class _MyAppState extends State<MyApp> {
       prefs.setBool("isLoggedin", value);
     });
   }
-
-  getValue() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    //Return double
-    name = prefs.getString('name');
-    image = prefs.getString('image');
-  }
-
   @override
   void initState() {
-    getValue();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    bool signin;
+
+    name = prefs.getString('name');
+    if (name == null) {
+      signin = false;
+    } else {
+      signin = true;
+    }
+    //print(signin);
     return ChangeNotifierProvider(
         create: ((context) => ThemeModel(isDark)),
         builder: (context, child) {
@@ -79,10 +81,10 @@ class _MyAppState extends State<MyApp> {
                     )),
             theme: Provider.of<ThemeModel>(context).currentTheme,
             debugShowCheckedModeBanner: false,
-            
+
             // home: Settings(),
             // home: Profile(),
-            home: name == null ? Onboarding() : MenuDashboardLayout(),
+            home: signin == true ? MenuDashboardLayout() : Onboarding(),
           );
         });
   }

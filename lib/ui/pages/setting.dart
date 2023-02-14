@@ -50,17 +50,14 @@ class _SettingsState extends State<Settings> {
               await pre.remove('image');
               pre.clear();
               GoogleSignInApi.logout();
-
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => Onboarding()));
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => Onboarding()));
             }
 
             if (title == 'Dark mode') {
-              final settings = Provider.of<ThemeModel>(context,listen: false);
+              final settings = Provider.of<ThemeModel>(context, listen: false);
               settings.Theme();
             }
-
-            
           },
           highlightColor: Color.fromARGB(132, 135, 208, 245),
           splashColor: Color.fromARGB(61, 231, 231, 231),
