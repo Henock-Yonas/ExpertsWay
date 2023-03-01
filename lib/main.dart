@@ -1,5 +1,3 @@
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:learncoding/api/Google_signin_api.dart';
 import 'package:learncoding/api/google_signin_api.dart';
 import 'package:learncoding/ui/pages/help.dart';
 import 'package:learncoding/ui/pages/navmenu/dashboard.dart';
@@ -14,20 +12,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learncoding/global/globals.dart' as globals;
 import 'package:learncoding/routes/router.dart' as router;
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'api/Provider/theme_provider.dart';
+import 'package:get/get.dart';
 
 String? name;
 String? image;
-var isDark;
 late SharedPreferences prefs;
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  prefs = await SharedPreferences.getInstance();
-  isDark = prefs.getBool('is_dark') ?? false;
 
   // await Firebase.initializeApp();
   SharedPreferences.getInstance().then((prefs) {
@@ -41,7 +34,6 @@ Future main() async {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp();
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -49,45 +41,40 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   void getLoginStatus() async {
     WidgetsFlutterBinding.ensureInitialized();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     globals.gAuth.googleSignIn.isSignedIn().then((value) {
       prefs.setBool("isLoggedin", value);
     });
   }
+
+  getValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //Return double
+    name = prefs.getString('name');
+    image = prefs.getString('image');
+  }
+
   @override
   void initState() {
+    getLoginStatus();
+    MenuDashboardLayout();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    bool signin;
-
-    name = prefs.getString('name');
-    if (name == null) {
-      signin = false;
-    } else {
-      signin = true;
-    }
-    //print(signin);
-    
-    return ChangeNotifierProvider(
-        create: ((context) => ThemeModel(isDark)),
-        builder: (context, child) {
-          return MaterialApp(
-            onGenerateRoute: router.generateRoute,
-            onUnknownRoute: (settings) => CupertinoPageRoute(
-                builder: (context) => UndefinedScreen(
-                      name: settings.name,
-                    )),
-            theme: Provider.of<ThemeModel>(context).currentTheme,
-            debugShowCheckedModeBanner: false,
-
-            // home: Settings(),
-            // home: Profile(),
-            home: signin == true ? MenuDashboardLayout() : Onboarding(),
-          );
-        });
+    return GetCupertinoApp(
+      onGenerateRoute: router.generateRoute,
+      onUnknownRoute: (settings) => CupertinoPageRoute(
+          builder: (context) => UndefinedScreen(
+                name: settings.name,
+              )),
+      // theme: Provider.of<ThemeModel>(context).currentTheme,
+      debugShowCheckedModeBanner: false,
+      // home: Settings(),
+      // home: Profile(),
+      home: name == null ? Onboarding() : MenuDashboardLayout(),
+    );
   }
 }
 

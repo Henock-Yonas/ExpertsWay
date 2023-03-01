@@ -30,6 +30,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   another_flushbar: ^1.12.29
+  cached_network_image: ^3.2.3
   cloud_firestore: ^4.0.1
 
   # The following adds the Cupertino Icons font to your application.
@@ -45,6 +46,7 @@ dependencies:
   flutter_calendar_carousel: ^2.4.0
   flutter_html: ^2.2.1
   font_awesome_flutter: ^10.3.0
+  get: ^4.6.5
   google_sign_in: ^5.4.2
   provider: ^6.0.4
   shared_preferences: ^2.0.15

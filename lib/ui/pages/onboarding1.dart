@@ -35,7 +35,6 @@ class _OnboardingState extends State<Onboarding> {
               "Easy access to video lectures, & reading materials.",
               textAlign: TextAlign.center,
               style: TextStyle(
-                 decoration: TextDecoration.none,
                   fontFamily: 'Red Hat Display',
                   fontSize: 14,
                   color: Color(0xFFFFFFFF)),
@@ -53,11 +52,9 @@ class _OnboardingState extends State<Onboarding> {
               "Ask questions, earn coins and dominate the global leaderboard.",
               textAlign: TextAlign.center,
               style: TextStyle(
-                  decoration: TextDecoration.none,
                   fontFamily: 'Red Hat Display',
                   fontSize: 14,
                   color: Color(0xFFFFFFFF)),
-                  
             ),
           )
         ],
@@ -72,7 +69,6 @@ class _OnboardingState extends State<Onboarding> {
               "E-Learn",
               textAlign: TextAlign.center,
               style: TextStyle(
-                  decoration: TextDecoration.none,
                   fontFamily: 'Red Hat Display',
                   fontSize: 28,
                   color: Color(0xFFFFFFFF)),
@@ -87,7 +83,6 @@ class _OnboardingState extends State<Onboarding> {
               "The complete E-learning solution for students of all ages!\n\n\nJoin for FREE now!",
               textAlign: TextAlign.center,
               style: TextStyle(
-                decoration: TextDecoration.none,
                   fontFamily: 'Red Hat Display',
                   fontSize: 14,
                   color: Color(0xFFFFFFFF)),
@@ -119,11 +114,19 @@ class _OnboardingState extends State<Onboarding> {
   }
 
   Future signin() async {
-    final user = await GoogleSignInApi.login();
-    String? name = user!.displayName;
-    String? image = user.photoUrl;
+  
+  try {
+      final user = await GoogleSignInApi.login();
+      String? name = user!.displayName;
+      String? image = user.photoUrl;
 
-    UserPreferences.setuser(image!, name!);
+      // SharedPreferences pref = await SharedPreferences.getInstance();
+      UserPreferences.setuser(image!, name!);
+
+   } catch (error) {
+   // console.error("Error during login: ", error);
+      UserPreferences.setuser("https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50", "testDisplayName");
+  }
 
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => (MenuDashboardLayout())));
